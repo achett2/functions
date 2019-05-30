@@ -1,0 +1,22 @@
+getSQL <- function(filepath){
+  conn = file(filepath, "r")
+  query <- ""
+
+  while (TRUE){
+    line <- readLines(con, n = 1)
+
+    if ( length(line) == 0 ){
+      break
+    }
+
+    line <- gsub("\\t", " ", line)
+
+    if(grepl("--",line) == TRUE){
+      line <- paste(sub("--","/*",line),"*/")
+    }
+
+    query <- paste(query, line)
+  }
+  close(conn)
+  return(query)
+}
